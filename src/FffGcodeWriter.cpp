@@ -3,6 +3,7 @@
 #include <limits> // numeric_limits
 
 #include "utils/math.h"
+#include "utils/misc.h"
 #include "FffGcodeWriter.h"
 #include "FffProcessor.h"
 #include "progress/Progress.h"
@@ -1160,6 +1161,7 @@ void FffGcodeWriter::processSingleLayerInfill(LayerPlan& gcode_layer, const Slic
 
 void FffGcodeWriter::processSpiralizedWall(const SliceDataStorage& storage, LayerPlan& gcode_layer, const SliceMeshStorage* mesh, const PathConfigStorage::MeshPathConfigs& mesh_config, const SliceLayerPart& part, unsigned int layer_nr) const
 {
+    UNUSED_PARAM(mesh);
     if (part.insets.size() == 0 || part.insets[0].size() == 0)
     {
         // wall doesn't have usable outline

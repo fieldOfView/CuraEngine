@@ -5,6 +5,7 @@
 
 #include "utils/math.h"
 #include "utils/logoutput.h"
+#include "utils/misc.h"
 #include "weaveDataStorage.h"
 #include "progress/Progress.h"
 
@@ -60,7 +61,9 @@ void Wireframe2gcode::writeGCode()
     // bottom:
     Polygons empty_outlines;
     writeFill(wireFrame.bottom_infill.roof_insets, empty_outlines, 
-              [this](Wireframe2gcode& thiss, WeaveRoofPart& inset, WeaveConnectionPart& part, unsigned int segment_idx) { 
+              [this](Wireframe2gcode& thiss, WeaveRoofPart& inset, WeaveConnectionPart& part, unsigned int segment_idx) {
+                    UNUSED_PARAM(thiss);
+                    UNUSED_PARAM(inset);
                     WeaveConnectionSegment& segment = part.connection.segments[segment_idx]; 
                     if (segment.segmentType == WeaveSegmentType::MOVE || segment.segmentType == WeaveSegmentType::DOWN_AND_FLAT) // this is the case when an inset overlaps with a hole 
                     {
@@ -72,6 +75,7 @@ void Wireframe2gcode::writeGCode()
                 }   
             , 
               [this](Wireframe2gcode& thiss, WeaveConnectionSegment& segment) { 
+                    UNUSED_PARAM(thiss);
                     if (segment.segmentType == WeaveSegmentType::MOVE)
                         writeMoveWithRetract(segment.to);
                     else if (segment.segmentType == WeaveSegmentType::DOWN_AND_FLAT)
@@ -141,6 +145,7 @@ void Wireframe2gcode::writeGCode()
         writeFill(layer.roofs.roof_insets, layer.roofs.roof_outlines,
                   handle_roof,
                 [this](Wireframe2gcode& thiss, WeaveConnectionSegment& segment) { // handle flat segments
+                    UNUSED_PARAM(thiss);
                     if (segment.segmentType == WeaveSegmentType::MOVE)
                     {
                         writeMoveWithRetract(segment.to);
@@ -310,6 +315,7 @@ void Wireframe2gcode::strategy_compensate(WeaveConnectionPart& part, unsigned in
 }
 void Wireframe2gcode::handle_segment(WeaveLayer& layer, WeaveConnectionPart& part, unsigned int segment_idx) 
 {
+    UNUSED_PARAM(layer);
     WeaveConnectionSegment& segment = part.connection.segments[segment_idx];
     
     switch(segment.segmentType)
@@ -346,6 +352,7 @@ void Wireframe2gcode::handle_segment(WeaveLayer& layer, WeaveConnectionPart& par
 
 void Wireframe2gcode::handle_roof_segment(WeaveRoofPart& inset, WeaveConnectionPart& part, unsigned int segment_idx)
 {
+    UNUSED_PARAM(inset);
     WeaveConnectionSegment& segment = part.connection.segments[segment_idx];
     Point3 from = (segment_idx == 0)? part.connection.from : part.connection.segments[segment_idx - 1].to;
     WeaveConnectionSegment* next_segment = nullptr;
