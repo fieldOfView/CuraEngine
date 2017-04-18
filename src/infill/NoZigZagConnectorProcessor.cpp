@@ -1,5 +1,5 @@
 /** Copyright (C) 2016 Ultimaker - Released under terms of the AGPLv3 License */
-#include "../utils/misc.h"
+#include "../utils/macros.h"
 
 #include "NoZigZagConnectorProcessor.h"
 
