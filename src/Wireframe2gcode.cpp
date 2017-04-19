@@ -114,7 +114,7 @@ void Wireframe2gcode::writeGCode()
                 writeMoveWithRetract(part.connection.from);
                 for (unsigned int segment_idx = 0; segment_idx < part.connection.segments.size(); segment_idx++)
                 {
-                    handle_segment(layer, part, segment_idx);
+                    handle_segment(part, segment_idx);
                 }
             }
             
@@ -313,9 +313,8 @@ void Wireframe2gcode::strategy_compensate(WeaveConnectionPart& part, unsigned in
     
     gcode.writeExtrusion(newTop, speedUp * newLength / orrLength, extrusion_mm3_per_mm_connection * orrLength / newLength);
 }
-void Wireframe2gcode::handle_segment(WeaveLayer& layer, WeaveConnectionPart& part, unsigned int segment_idx) 
+void Wireframe2gcode::handle_segment(WeaveConnectionPart& part, unsigned int segment_idx)
 {
-    UNUSED_PARAM(layer);
     WeaveConnectionSegment& segment = part.connection.segments[segment_idx];
     
     switch(segment.segmentType)
